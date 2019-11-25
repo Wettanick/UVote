@@ -1,4 +1,4 @@
-This application was created by:
+UVote was created by:
 
 
 
