@@ -1,7 +1,7 @@
 //  UVote
 //
 //  Nicholas Wetta
-//  Austin Meystayer
+//  Austin Mestayer
 //  Brian Gates
 
 import UIKit
