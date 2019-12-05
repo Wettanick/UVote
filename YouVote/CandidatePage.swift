@@ -6,6 +6,7 @@
 
 import UIKit
 
+//Class that handles displaying information about a specific candidate
 class CandidatePage: UIViewController {
     
     var viewingFavorite: Bool = false
@@ -19,15 +20,24 @@ class CandidatePage: UIViewController {
     @IBOutlet weak var InformationText: UITextView!
     @IBOutlet weak var CandidateImage: UIImageView!
     
+    
+    //Method to setup view when it is displayed
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         if (!viewingFavorite) {
+            
             name = GlobalVariables.Variables.Names[GlobalVariables.Variables.CandidateIndex]
             party = GlobalVariables.Variables.Party[GlobalVariables.Variables.CandidateIndex]
             summary = GlobalVariables.Variables.Summary[GlobalVariables.Variables.CandidateIndex]
             link = GlobalVariables.Variables.ImageLink[GlobalVariables.Variables.CandidateIndex]
+            
+            
+            if (GlobalVariables.Variables.FavoritesNames.contains(name)) {
+                viewingFavorite = true
+                FavoriteButton.setTitle("Unfavorite", for: UIControl.State.normal)
+            }
             
             HeaderText.text = GlobalVariables.Variables.Names[GlobalVariables.Variables.CandidateIndex]
             PartyText.text = GlobalVariables.Variables.Party[GlobalVariables.Variables.CandidateIndex]
@@ -39,6 +49,10 @@ class CandidatePage: UIViewController {
                 }
                 CandidateImage.image = UIImage(data : data)
             }
+            
+            //Assert to check if the correct candidate is being displayed.
+            assert(name == GlobalVariables.Variables.Names[GlobalVariables.Variables.CandidateIndex], "Confirms that correct candidate is being displayed")
+            
         }
         else {
             FavoriteButton.setTitle("Unfavorite", for: UIControl.State.normal)
@@ -58,10 +72,20 @@ class CandidatePage: UIViewController {
                 }
                 CandidateImage.image = UIImage(data : data)
             }
+            
+            
+            //Assert to check if the correct candidate is being displayed.
+            assert(name == GlobalVariables.Variables.FavoritesNames[GlobalVariables.Variables.CandidateIndex], "Confirms that correct candidate is being displayed")
+            
         }
+        
+        
+
+        
         
     }
     
+    //Method to Add or Remove Favorite Candidate from array.
     @IBAction func FavoriteButton(_ sender: Any) {
         
         if !(GlobalVariables.Variables.FavoritesNames.contains(name)) {
@@ -71,7 +95,8 @@ class CandidatePage: UIViewController {
             GlobalVariables.Variables.FavoritesSummary.append(summary)
             GlobalVariables.Variables.FavoritesImageLink.append(link)
             
-            //print("Favorite Added")
+            //Assert to check if favorite is added
+            assert(name == GlobalVariables.Variables.FavoritesNames.last, "Favorite Failed to Add")
             
             FavoriteButton.setTitle("Unfavorite", for: UIControl.State.normal)
             
@@ -85,13 +110,15 @@ class CandidatePage: UIViewController {
         else {
             
             let index = GlobalVariables.Variables.FavoritesNames.firstIndex(of: name)
+            
+            //Assert to check if favorite is removed
+            assert(name == GlobalVariables.Variables.FavoritesNames[index!], "Favorite Found to be Removed")
+            
             GlobalVariables.Variables.FavoritesNames.remove(at: index!)
             GlobalVariables.Variables.FavoritesParty.remove(at: index!)
             GlobalVariables.Variables.FavoritesSummary.remove(at: index!)
             GlobalVariables.Variables.FavoritesImageLink.remove(at: index!)
-            
-            //print("Favorite Removed")
-            
+                
             FavoriteButton.setTitle("Favorite", for: UIControl.State.normal)
             
             let defaults = UserDefaults.standard
@@ -104,7 +131,7 @@ class CandidatePage: UIViewController {
         
     }
     
-    
+    //Method to return to previous View Controller
     @IBAction func ViewFavorite(_ sender: Any) {
 
             self.dismiss(animated: true)

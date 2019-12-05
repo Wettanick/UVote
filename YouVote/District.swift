@@ -7,12 +7,14 @@
 import UIKit
 import Firebase
 
+//Class that handles the User finding and/or selecting the district for a given election
 class District: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     var keyboardHeight:CGRect?
     
     @IBOutlet weak var HeaderText: UITextField!
+    @IBOutlet weak var LocationStack: UIStackView!
     
     let DistrictPickerView = UIPickerView()
     @IBOutlet weak var DistrictPicker: UITextField!
@@ -23,18 +25,23 @@ class District: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, U
     
     var DistrictSelection:[String] = []
     
+    
+    //To setup pickerview, the number of components must be selected. There is only one option for the User to select.
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
+    //To setup pickerview, the number of rows is populated by the array containing the different districts.
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return DistrictSelection.count
     }
     
+    //To setup pickerview, the name of each row is set to the value of the array containing the different districts.
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return DistrictSelection[row]
     }
     
+    //Handles when the User swaps from one item to another in the pickerview
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         GlobalVariables.Variables.CurrentDistrict = DistrictSelection[row]
@@ -42,9 +49,10 @@ class District: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, U
         
     }
 
-    @IBOutlet weak var LocationStack: UIStackView!
     
     
+    
+    //Method to add or removes previously saved values when View Controller becomes active
     override func viewWillAppear(_ animated: Bool) {
         
         GlobalVariables.Variables.Names.removeAll()
@@ -64,6 +72,7 @@ class District: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, U
         
     }
     
+    //Method to setup view when it is displayed
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -131,9 +140,10 @@ class District: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, U
         view.endEditing(true)
     }
 
+    //Method to proceed to next View Controller
     @IBAction func NavigateForward(_ sender: Any) {
         
-        
+        //Access Database to gather the information needed to populate the next View Controller
         let db = Firestore.firestore().collection(GlobalVariables.Variables.CurrentElection + " Districts" + "/" + GlobalVariables.Variables.CurrentDistrict + "/" + "Candidates")
 
         db.getDocuments { (snapshot, error) in
@@ -225,6 +235,7 @@ class District: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, U
 
     }
     
+    //Method to Find the District based on the Address, City, and Zipcode that the User enters
     @IBAction func FindDistrict(_ sender: Any) {
         
         if (Address.text != nil && City.text != nil && ZIPCode.text != nil) {
@@ -283,12 +294,13 @@ class District: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, U
         
     }
     
+    //Part of the method used to gather information related to the current District of the User in order to display it to them
     func FindStringIndex(string: String, substring: String) -> Int {
   
         var index:Int = 0
         var district:Int?
         
-        // Loop through parent string looing for the first character of the substring
+        // Loop through parent string looking for the first character of the substring
         for char in string {
             if substring.first == char {
 
@@ -331,6 +343,7 @@ class District: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, U
         
     }
     
+    //Method to return to previous View Controller
     @IBAction func NavigateBackwards(_ sender: Any) {
         
         self.dismiss(animated: true)

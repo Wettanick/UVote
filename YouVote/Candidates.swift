@@ -7,6 +7,7 @@
 import UIKit
 import Firebase
 
+//Class that handles displaying the available candidates for a specific district of an election
 class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     
@@ -36,24 +37,29 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
     @IBOutlet weak var CandidatePickerView: UIPickerView!
     var CandidateNames:[String] = []
     
+    //To setup pickerview, the number of components must be selected. There is only one option for the User to select.
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
+    //To setup pickerview, the number of rows is populated by the array containing the different candidates.
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return CandidateNames.count
     }
     
+    //To setup pickerview, the name of each row is set to the value of the array containing the different candidates.
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return CandidateNames[row]
     }
     
+    //Handles when the User swaps from one item to another in the pickerview
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         GlobalVariables.Variables.CandidateIndex = row
         
     }
     
+    //Method to setup view when it is displayed
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -75,8 +81,14 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         
         HeaderText.text = GlobalVariables.Variables.CurrentDistrict + " " + "Candidates"
         
+        //Assert to check if candidates are being displayed.
+        assert(CandidateNames != [], "Confirms that candidates are being displayed")
+        
+        
     }
     
+    
+    //Method to add or remove Pro Life Filter
     @IBAction func ProLife(_ sender: Any) {
         if (proLife == false) {
             numOfFilters += 1
@@ -90,6 +102,8 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         }
         CandidatePickerView.reloadComponent(0)
     }
+    
+    //Method to add or remove Pro Choice Filter
     @IBAction func ProChoice(_ sender: Any) {
         if (proChoice == false) {
             numOfFilters += 1
@@ -103,6 +117,8 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         }
         CandidatePickerView.reloadComponent(0)
     }
+    
+    //Method to add or remove Climate Change Filter
     @IBAction func ClimateChange(_ sender: Any) {
         if (climateChange == false) {
             numOfFilters += 1
@@ -116,6 +132,8 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         }
         CandidatePickerView.reloadComponent(0)
     }
+    
+    //Method to add or remove Pro Gun Control Filter
     @IBAction func ProGunControl(_ sender: Any) {
         if (proGunControl == false) {
             numOfFilters += 1
@@ -129,6 +147,8 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         }
         CandidatePickerView.reloadComponent(0)
     }
+    
+    //Method to add or remove Pro 2nd Amendment Filter
     @IBAction func Pro2ndAmendment(_ sender: Any) {
         if (pro2ndAmendment == false) {
             numOfFilters += 1
@@ -142,6 +162,8 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         }
         CandidatePickerView.reloadComponent(0)
     }
+    
+    //Method to add or remove Pro Trump Filter
     @IBAction func ProTrump(_ sender: Any) {
         if (proTrump == false) {
             numOfFilters += 1
@@ -155,6 +177,8 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         }
         CandidatePickerView.reloadComponent(0)
     }
+    
+    //Method to add or remove Pro LGBTQ Rights Filter
     @IBAction func ProLGBTQRights(_ sender: Any) {
         if (proLGBTQRights == false) {
             numOfFilters += 1
@@ -168,6 +192,8 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         }
         CandidatePickerView.reloadComponent(0)
     }
+    
+    //Method to add or remove Decriminalizing Marijuana Filter
     @IBAction func DecriminalizingMarijuana(_ sender: Any) {
         if (decriminalizingMarijuana == false) {
             numOfFilters += 1
@@ -181,6 +207,8 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         }
         CandidatePickerView.reloadComponent(0)
     }
+    
+    //Method to add or remove Single Payer Healthcare Filter
     @IBAction func SinglePayerHealthcare(_ sender: Any) {
         if (singlePayerHealthcare == false) {
             numOfFilters += 1
@@ -195,6 +223,7 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
         CandidatePickerView.reloadComponent(0)
     }
     
+    //Method to clear all applied filters
     @IBAction func ClearFilters(_ sender: Any) {
         numOfFilters = 0
         proLife = false
@@ -236,12 +265,14 @@ class Candidates: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
     }
 
     
+    //Method to return to previous View Controller
     @IBAction func NavigateBackwards(_ sender: Any) {
         
         self.dismiss(animated: true)
         
     }
     
+    //Method to proceed to next View Controller
     @IBAction func NavigateForward(_ sender: Any) {
         
         self.performSegue(withIdentifier: "View Candidate", sender: self)
